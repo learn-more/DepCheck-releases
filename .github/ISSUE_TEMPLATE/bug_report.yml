@@ -1,0 +1,35 @@
+name: Bug report
+description: Something DepCheck got wrong
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The title bar shows it, for example "DepCheck x86 v0.3.1".
+      placeholder: DepCheck x86 v0.3.1
+    validations:
+      required: true
+
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 10 22H2 x64
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you analyzed, what DepCheck reported, and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: Use "Copy all" in the window, or paste the console output.
+      render: text

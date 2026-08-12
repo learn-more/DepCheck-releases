@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security problem
+    url: https://github.com/learn-more/DepCheck-releases/blob/main/SECURITY.md
+    about: Crashes on malformed files go to mail, not to a public issue.
