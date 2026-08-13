@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>DepCheck &ndash; Windows dependency checker</title>
+	<link rel="icon" href="favicon.ico" sizes="any">
+	<link rel="apple-touch-icon" href="apple-touch-icon.png">
+	<link rel="canonical" href="https://depcheck.com/">
+	<meta name="description" content="DepCheck resolves the imports of a Windows exe or dll the way the loader does, and shows what is missing. Free, Windows XP and later.">
+	<meta name="author" content="Mark Jansen">
+
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://depcheck.com/">
+	<meta property="og:title" content="DepCheck &ndash; Windows dependency checker">
+	<meta property="og:description" content="Resolves the imports of a Windows exe or dll the way the loader does, and shows what is missing.">
+	<meta property="og:image" content="https://depcheck.com/images/analysis.png">
+	<meta name="twitter:card" content="summary_large_image">
+
+	<link rel="stylesheet" href="depcheck.css" type="text/css">
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		#top {
+			margin: 0;
+			padding: 2px;
+			background: #505f70;
+			color: #ffffff;
+			font-size: 18px;
+			font-weight: bold;
+			text-align: right;
+		}
+
+		#content {
+			max-width: 46em;
+			padding: 4px 10px 2em;
+		}
+
+		h2 {
+			font-size: 1.15em;
+			margin: 1.6em 0 0.4em;
+		}
+
+		ul {
+			padding-left: 1.2em;
+		}
+
+		li {
+			margin: 0.35em 0;
+		}
+
+		pre {
+			background: #fff;
+			border: 1px solid #ddd;
+			border-radius: 0.4em;
+			padding: 0.5em 0.7em;
+			overflow-x: auto;
+			font-size: 0.85em;
+			line-height: 1.4em;
+			color: #555;
+		}
+
+		table.exit td {
+			padding: 0.15em 1.2em 0.15em 0;
+			vertical-align: top;
+		}
+
+		table.downloads {
+			border-collapse: collapse;
+			margin: 1em 0 0.6em;
+		}
+
+		table.downloads td {
+			padding: 0.3em 1.2em 0.3em 0;
+			vertical-align: middle;
+		}
+
+		table.downloads td.hash {
+			font-size: 0.75em;
+			color: #555;
+			word-break: break-all;
+			font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace;
+		}
+
+		.note {
+			font-size: 0.9em;
+			color: #555;
+		}
+	</style>
+</head>
+<body>
+	<div id="top">Dependency Checker&nbsp;</div>
+	<div id="content">
+		<p>DepCheck shows why a Windows module (exe, dll, ocx) will not load. Drop a file on it and it resolves the
+		imports the way the loader does.</p>
+
+		<div class="image rborder">
+			<img src="/images/analysis.png" width="583" height="365" alt="DepCheck showing the resolved dependencies of DepCheck-x86.exe.">
+			<br>
+			Example result after DepCheck scanning itself.
+		</div>
+
+		<h2>What it resolves</h2>
+		<p>The real search order, not a directory scan:</p>
+		<ul>
+			<li><b>KnownDLLs</b>, from the system directory first.</li>
+			<li><b>apiset contracts</b> (<code>api-ms-*</code>, <code>ext-ms-*</code>), through the apiset map.</li>
+			<li><b>SxS / manifest redirection</b>: a Common-Controls 6.0 manifest gives the WinSxS
+				<code>comctl32.dll</code>, not 5.82 from System32.</li>
+			<li>The <b>search path of the analyzed binary's architecture</b>: a 64-bit build reports SysWOW64
+				dependencies for a 32-bit target, and the other way around.</li>
+			<li>Dependencies of the <b>wrong bitness</b>, reported instead of passed.</li>
+			<li>Per file: <b>SHA-256</b>, and whether it carries a <code>Zone.Identifier</code>.</li>
+		</ul>
+
+		<h2>Download<!--{{VERSION}}--></h2>
+		<table class="downloads">
+<!--{{DOWNLOADS}}-->
+		</table>
+		<p class="note">
+			One executable, nothing to install, Windows XP and later. Either build analyzes 32-bit and 64-bit binaries;
+			pick the one matching your Windows.<br>
+<!--{{SIGNING}}-->
+<!--{{SUMS}}-->
+			<a href="https://github.com/learn-more/DepCheck-releases/releases">All releases and release notes</a>
+		</p>
+
+		<h2>Usage</h2>
+		<p>Drop a file on the window or on the icon. From a console it writes the tree to stdout:</p>
+		<pre>DepCheck.exe some.dll
+DepCheck.exe /depth:2 some.dll</pre>
+		<p><code>/depth:N</code> limits the walk depth (0, the default, is unlimited). Exit code:</p>
+		<table class="exit">
+			<tr><td><code>0</code></td><td>everything resolved</td></tr>
+			<tr><td><code>1</code></td><td>a dependency is missing</td></tr>
+			<tr><td><code>2</code></td><td>the file could not be analyzed</td></tr>
+		</table>
+
+		<hr>
+		<p class="note">
+			Free to use. Bugs and requests: <a href="https://github.com/learn-more/DepCheck-releases/issues">open an issue on GitHub</a>, or mail
+			mark<span id="funny">[NO SPAM]</span>.<span id="funny">[NO SPAM]</span>jansen<span id="funny">[NO SPAM]</span>@<span id="funny">[NO SPAM]</span>reactos.org</p>
+	</div>
+</body>
+</html>

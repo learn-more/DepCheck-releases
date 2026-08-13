@@ -1,0 +1,77 @@
+body {
+	background:#f7f5f3 url('/images/noise.png') top left;
+	font-family:arial, helvetica, sans-serif;
+	font-size:15px;
+	color: #111;
+}
+
+.rborder {
+	border: 1px solid #ddd;
+	-webkit-border-radius: 0.4em;
+	-moz-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	-o-border-radius: 0.4em;
+	border-radius: 0.4em;
+}
+
+code {
+	display: inline-block;
+	background: #fff;
+	font-size: .8em;
+	line-height: 1.4em;
+	color: #555;
+	padding: 0 .3em;
+	margin: -1px 0;
+	font-family: Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
+	border: 1px solid #ddd;
+	-webkit-border-radius: 0.4em;
+	-moz-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	-o-border-radius: 0.4em;
+	border-radius: 0.4em;
+}
+
+#bot {
+	font-size:9px;
+}
+
+span#funny {
+	display: none;
+}
+
+div.image {
+	background-color: #F9F9F9;
+	display: inline-table;
+	padding: 3px;
+}
+
+div.image img {
+	vertical-align: middle;
+	margin-bottom: 3px;
+	max-width: 100%;
+	height: auto;
+}
+
+a {
+	color:black;
+}
+
+/* icon from http://www.famfamfam.com/lab/icons/silk/ */
+
+a.dl {
+	font-size: 18px;
+	font-weight: bold;
+	white-space: nowrap;
+	background-position: left center;
+	background-repeat: no-repeat;
+	background-image: url('/images/application.png');
+}
+
+a.dl:hover {
+	color: #555;
+	background-image: url('/images/application_put.png');
+}
+
+a img {
+	border: none;
+}
