@@ -98,13 +98,13 @@
 		imports the way the loader does.</p>
 
 		<div class="image rborder">
-			<img src="/images/analysis.png" width="583" height="365" alt="DepCheck showing the resolved dependencies of DepCheck-x86.exe.">
+			<img src="/images/analysis.png" width="583" height="365" alt="DepCheck showing the resolved dependencies of DepCheck-x64.exe.">
 			<br>
 			Example result after DepCheck scanning itself.
 		</div>
 
 		<h2>What it resolves</h2>
-		<p>The real search order, not a directory scan:</p>
+		<p>The real search order:</p>
 		<ul>
 			<li><b>KnownDLLs</b>, from the system directory first.</li>
 			<li><b>apiset contracts</b> (<code>api-ms-*</code>, <code>ext-ms-*</code>), through the apiset map.</li>
@@ -113,7 +113,19 @@
 			<li>The <b>search path of the analyzed binary's architecture</b>: a 64-bit build reports SysWOW64
 				dependencies for a 32-bit target, and the other way around.</li>
 			<li>Dependencies of the <b>wrong bitness</b>, reported instead of passed.</li>
+			<li><b>Forwarded exports</b>, followed to the module that actually implements them.</li>
+			<li><b>Drivers</b> (<code>.sys</code>), resolved the way the kernel loader does, including
+				<code>System32\drivers</code>.</li>
+		</ul>
+
+		<h2>What it reports</h2>
+		<ul>
+			<li>Every <b>missing DLL and missing imported function</b>, on the module that imports it.</li>
+			<li>For a missing runtime DLL, the <b>redistributable</b> that ships it.</li>
+			<li><b>Damaged or oversized import tables</b>, flagged instead of shown as clean.</li>
 			<li>Per file: <b>SHA-256</b>, and whether it carries a <code>Zone.Identifier</code>.</li>
+			<li>The <b>Windows version</b> it ran on, or Wine or ReactOS by name.</li>
+			<li>A clean <b>System32 subtree folded</b> into one line, so the problems stand out.</li>
 		</ul>
 
 		<h2>Download<!--{{VERSION}}--></h2>
@@ -130,14 +142,21 @@
 		</p>
 
 		<h2>Usage</h2>
-		<p>Drop a file on the window or on the icon. From a console it writes the tree to stdout:</p>
+		<p>Drop a file on the window or on the icon; right-click the window for the options below. From a console it
+		writes the tree to stdout:</p>
 		<pre>DepCheck.exe some.dll
-DepCheck.exe /depth:2 some.dll</pre>
-		<p><code>/depth:N</code> limits the walk depth (0, the default, is unlimited). Exit code:</p>
+DepCheck.exe /depth:2 /imports some.dll</pre>
+		<table class="exit">
+			<tr><td><code>/depth:N</code></td><td>walk only N levels below the file; 0, the default, is unlimited</td></tr>
+			<tr><td><code>/full</code></td><td>list every System32 module instead of folding clean subtrees</td></tr>
+			<tr><td><code>/imports</code></td><td>list every imported function, not only the missing ones</td></tr>
+			<tr><td><code>/help</code></td><td>show all options</td></tr>
+		</table>
+		<p><code>-full</code> and <code>--full</code> work too. Exit code:</p>
 		<table class="exit">
 			<tr><td><code>0</code></td><td>everything resolved</td></tr>
-			<tr><td><code>1</code></td><td>a dependency is missing</td></tr>
-			<tr><td><code>2</code></td><td>the file could not be analyzed</td></tr>
+			<tr><td><code>1</code></td><td>a DLL or an imported function is missing (delay-load imports do not count)</td></tr>
+			<tr><td><code>2</code></td><td>the analysis hit an error</td></tr>
 		</table>
 
 		<hr>
