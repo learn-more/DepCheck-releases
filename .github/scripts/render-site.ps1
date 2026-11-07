@@ -28,7 +28,9 @@ $PSNativeCommandUseErrorActionPreference = $false
 
 if (-not $Repo) { throw 'Repo is empty and GITHUB_REPOSITORY is not set.' }
 
-$binaries = [ordered]@{ x64 = 'DepCheck-x64.exe'; x86 = 'DepCheck-x86.exe' }
+$binaries = [ordered]@{ x64 = 'DepCheck-x64.exe'; x86 = 'DepCheck-x86.exe'; ARM64 = 'DepCheck-arm64.exe' }
+# Shown only when the release has the asset: older releases do not, and the fallback link would 404.
+$optional = @{ ARM64 = ' (experimental)' }
 $latestUrl = "https://github.com/$Repo/releases/latest"
 
 function ConvertTo-Html([string]$text)
@@ -113,6 +115,8 @@ foreach ($arch in $binaries.Keys)
 {
     $name = $binaries[$arch]
     $asset = if ($assets.ContainsKey($name)) { $assets[$name] } else { $null }
+    if ($optional.ContainsKey($arch) -and -not $asset) { continue }
+    $label = 'DepCheck for ' + $arch + $(if ($optional.ContainsKey($arch)) { $optional[$arch] } else { '' })
 
     $href = if ($asset) { [string]$asset.browser_download_url } else { "$latestUrl/download/$name" }
     $size = if ($asset) { [string][math]::Round($asset.size / 1KB) + ' KB' } else { '' }
@@ -123,7 +127,7 @@ foreach ($arch in $binaries.Keys)
     elseif ($sums.ContainsKey($name)) { $hash = $sums[$name] }
 
     $rows.Add("			<tr>")
-    $rows.Add("				<td><a class=""dl"" href=""$(ConvertTo-Html $href)"">&nbsp;&nbsp;&nbsp;&nbsp;DepCheck for $(ConvertTo-Html $arch)</a></td>")
+    $rows.Add("				<td><a class=""dl"" href=""$(ConvertTo-Html $href)"">&nbsp;&nbsp;&nbsp;&nbsp;$(ConvertTo-Html $label)</a></td>")
     $rows.Add("				<td class=""note"">$(ConvertTo-Html $size)</td>")
     $rows.Add("			</tr>")
     if ($hash)

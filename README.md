@@ -15,6 +15,7 @@ For crashes on malformed files, see [SECURITY.md](SECURITY.md) first.
 **Downloads**
 [DepCheck-x64.exe](https://github.com/learn-more/DepCheck-releases/releases/latest/download/DepCheck-x64.exe) ·
 [DepCheck-x86.exe](https://github.com/learn-more/DepCheck-releases/releases/latest/download/DepCheck-x86.exe) ·
+[DepCheck-arm64.exe](https://github.com/learn-more/DepCheck-releases/releases/latest/download/DepCheck-arm64.exe) (experimental) ·
 [all releases](https://github.com/learn-more/DepCheck-releases/releases)
 
 MIT, see [LICENSE](LICENSE).
